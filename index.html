@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Demo Two-Part Abbreviation Typographer</title>
+<style type="text/css">
+  body {
+    height: 100%;
+    font: 13px/18px "Inconsolata LGC", "Fira Mono OT", monospace;
+  }
+  .wrapper-input,
+  .wrapper-output {
+    display: inline-block;
+    vertical-align: top;
+    width: 40%;
+  }
+  .header { margin-top: 40px; }
+  .description { margin-bottom: 40px; font-size: 10px; color: #78909C; }
+  #textarea-input {
+    width: 90%;
+    height: 200px;
+    font: 13px/18px "Inconsolata LGC", "Fira Mono OT", monospace;
+  }
+  #p-output {
+    margin: 0;
+    padding: 0;
+    width: 90%;
+  }
+  .highlighted { background-color: #CCFF90; }
+</style>
+</head>
+<body>
+  <h1 class="header">Демо типографа для двухчастных сокращений</h1>
+  <p class="description">Добавляет <span class="highlighted">неразрывный пробел</span> между частями сокращений для русского языка. Убирает лишний для английского.</p>
+  <div>
+    <div class="wrapper-input">
+      <textarea id="textarea-input">Влейте 0.5 ст.л. соуса, т.е. 10 ч.л. Взбивайте, помешивайте и т.д., и т.п. Положите Яндекс.Денег на ж.д. билет. Избыток сокращений затрудняет восприятие текста.</textarea>
+    </div>
+    <div class="wrapper-output">
+      <p id="p-output"></p>
+    </div>
+  </div>
+
+  <script src="js/typographic-two-part-abbrs-l10n-db.js"></script>
+  <script src="js/typographic-two-part-abbrs.js"></script>
+  <script type="text/javascript">
+    var makeHighlight = function(pattern) {
+      return function(text) {
+        return text.replace(pattern, '<span class="highlighted">$&</span>');
+      };
+    }
+    var highlightNbsp = makeHighlight(/ /g);
+
+    var input = document.querySelector('#textarea-input');
+    var output = document.querySelector('#p-output');
+    var locale = 'ru';
+
+    output.innerHTML = highlightNbsp(typographicAbbrs(input.value, locale));
+
+    input.addEventListener('input', function() {
+      output.innerHTML = highlightNbsp(typographicAbbrs(this.value, locale));
+    }, false);
+  </script>
+</body>
+</html>
